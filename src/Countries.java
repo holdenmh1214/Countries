@@ -17,7 +17,7 @@ public class Countries {
 
         for (String line : lines) {
             String[] columns = line.split("\\|");
-            String firstLetter = String.valueOf(line.charAt(0));
+            String firstLetter = String.valueOf(columns[1].charAt(0));
             ArrayList<Country> list = countryGroup.get(firstLetter);
 
             String abv = columns[0];
@@ -37,7 +37,7 @@ public class Countries {
 
 
         System.out.println("Type a letter");
-        String tester = scanner.nextLine().toUpperCase();
+        String tester = scanner.nextLine().toLowerCase();
         String newFileName = String.format("%s_countries.txt",tester);
 
         if (countryGroup.containsKey(tester)){
