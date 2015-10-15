@@ -3,28 +3,31 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Countries {
 
 
     public static void main(String[] args) {
-        HashMap<String, ArrayList<String>> countryGroup = new HashMap();
+        HashMap<String, ArrayList<Country>> countryGroup = new HashMap();
         String postContent = readFile("countries.txt");
         String[] lines = postContent.split("\n");
+        Scanner scanner = new Scanner(System.in);
 
 
         for (String line : lines) {
             String[] columns = line.split("\\|");
             String firstLetter = String.valueOf(line.charAt(0));
-            ArrayList<String> list = countryGroup.get(firstLetter);
+            ArrayList<Country> list = countryGroup.get(firstLetter);
+
             String abv = columns[0];
             String name = columns[1];
             Country country = new Country(abv, name);
-            countryGroup.put(firstLetter, list);
+
+
 
             if (list == null){
                 list = new ArrayList();
-                country = new Country(abv, name);
                 list.add(country);
                 countryGroup.put(firstLetter, list);
             } else {
@@ -33,6 +36,18 @@ public class Countries {
         }
 
 
+        System.out.println("Type a letter");
+        String tester = scanner.nextLine().toUpperCase();
+        String newFileName = String.format("%s_countries.txt",tester);
+
+        if (countryGroup.containsKey(tester)){
+            String newLine = "";
+            for (Country newCountry : countryGroup.get(tester)) {
+                newLine += String.format("%s %s\n", newCountry.abv, newCountry.name);
+
+                writeFile(newFileName, newLine);
+            }
+        }
 
     }
 
@@ -55,10 +70,10 @@ public class Countries {
         try {
             FileWriter fw = new FileWriter(f);
             fw.write(fileContent);
+            fw.close();
 
         } catch (Exception e){
 
         }
     }
-
 }
